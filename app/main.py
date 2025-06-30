@@ -9,15 +9,20 @@ app = FastAPI(
     description="An API for managing books and their reviews.",
 )
 
-# ✅ Allow CORS (helpful for frontend or Postman testing)
+# ✅ CORS for frontend or Postman testing
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # You can change "*" to specific frontend URLs in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ✅ Route registration
+# ✅ Register routes
 app.include_router(book_routes.router, prefix="/api", tags=["Books"])
 app.include_router(review_routes.router, prefix="/api", tags=["Reviews"])
+
+# Optional root path for Render health check
+@app.get("/")
+def root():
+    return {"message": "Hello, Render!"}
